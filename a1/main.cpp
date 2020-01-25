@@ -1,10 +1,3 @@
-// Missile defence game
-
-
-#include "headers.h"
-
-
-// Window and world dimensions
 
 #define WINDOW_X_POS   100
 #define WINDOW_Y_POS    50
@@ -63,8 +56,11 @@ void mouseButtonCallback( GLFWwindow* window, int button, int action, int mods )
 
     // Calculate the world coordinates of mouse (x,y)
 
-    float wx = x; // (wrong)
-    float wy = y;
+    float worldHeight = worldTop-WORLD_BOTTOM;
+    float worldWidth  = WORLD_RIGHT-WORLD_LEFT;
+
+    float wx=(x/(float)WINDOW_WIDTH)*worldWidth; // (wrong)
+    float wy =worldHeight-(y/(float)WINDOW_HEIGHT)*worldHeight;
 
     // Shoot from silo 0, 1, or 2
 
@@ -83,6 +79,10 @@ void mouseButtonCallback( GLFWwindow* window, int button, int action, int mods )
       break;
     }
   }
+
+
+    // Shoot from silo 0, 1, or 2
+
 }
  
 
