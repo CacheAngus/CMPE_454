@@ -1,0 +1,94 @@
+                   CISC/CMPE 454 Assignment 1
+
+               Due January 31, 2020 before class 
+
+
+Your job is to build a Missile Command game.  Skeleton code has been
+provided in this directory.
+
+You may work singly or in pairs, unless you're a graduate student, in
+which case you must work singly.
+
+Compile the code:
+
+   On Linux:
+     make
+
+   On Windows with Visual Studio:
+     Open the a1 Visual Studio Solution file.
+
+Note that your submitted code must work on the CasLab Linux machines,
+so it's far better to start with Linux rather than to work on Windows
+and then try to port to Linux on the last day.
+
+Modify the code as follows:
+
+1. In mouseButtonCallback(), calculate the (wx,wy) world coordinates
+   of the (x,y) mouse position.
+
+2. Modify Missile::hasReachedDestination() to return the correct
+   value.
+
+3. Modify State::fireMissile() to create the correct missile, based
+   upon the target (x,y) position.
+
+4. Modify State::updateState() to
+
+    4a. Generate a new missile with probability that increases 
+        with time, and is randomly aimed at somewhere on the 
+        ground.
+
+    4b. Add explosions for missiles (both incoming and outgoing)
+        that have reached their desitinations.
+
+    4c. Check for a destroyed city or silo, and remove it from
+        the corresponding list.
+
+    4d. Check for the destruction of an incoming missile, and
+        remove such missile from the missilesIn list.
+
+5. Add two novel features of your own.  Some suggestions might be
+
+    - Have ballistic missile (under gravity and drag).
+
+    - Have the missile trail fade out behind some fixed distance from
+      current position.
+
+    - Have the explosion contract after reaching its maximum diameter.
+
+    - Fade the explosion colour toward the edges.
+
+    - Draw more interesting cities and silos (perhaps with texture
+      mapping).
+
+    - Display text to show the remaining numbers of missiles in each
+      silo, and display text to show a score (you choose the scoring).
+ 
+    - Add separate levels of play and show a score.
+
+    - Or anything else you think would be interesting and similarly
+      challenging to the suggestions above.
+
+6. Your submitted code must work on the CasLab Linux machines.  
+   Put all those code into a directory called a1.  Include
+
+     *.cpp
+     *.h
+     Makefile
+
+     README.txt    a file that (a) lists the NAME and STUDENT NUMBER of
+                   you and any partner with whom you worked and (b)
+                   describes the two novel features that you made in
+                   part 5.
+
+     feature1.png  two images in PNG format showing your two novel features
+     feature2.png  in action (using a screen capture, cropped to the window)
+
+   Zip the archive and email it to jstewart@cs.queensu.ca.
+
+YOU WILL LOSE MARKS if your archive is not a 'zip' or IF YOU INCLUDE
+EXTRA FILES.  In particular: on Windows, do not include the Debug or
+Release or x64 directories or the hidden ".vs" directory; on OSX, do not
+include the hidden "__MACOSX" directory.  Verify that your archive
+does not have extra files AFTER YOUR HAVE BUILT THE ARCHIVE.
+ 
