@@ -90,7 +90,10 @@ void State::updateState( float deltaT )
 
   for (i=0; i<explosions.size(); i++)
     if (explosions[i].radius() >= explosions[i].maxRadius()) {
+        float maxexplosionRange = explosions[i].pos[0] + 0.05;
+        float minExplosionRange = explosions[i].pos[0] - 0.05;
       //if position of explosion +/- explosion == any city or cilo position, remove silo/city from list
+    //find what the return of silos.position() is)
       explosions.remove(i);
       i--;
     }
