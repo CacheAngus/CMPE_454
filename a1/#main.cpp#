@@ -59,13 +59,10 @@ void mouseButtonCallback( GLFWwindow* window, int button, int action, int mods )
     float worldHeight = worldTop-WORLD_BOTTOM;
     float worldWidth  = WORLD_RIGHT-WORLD_LEFT;
 
+    //where the wx and wy are based on the whole window and not the individual silos
     float wx=((x)/(float)WINDOW_WIDTH)*worldWidth;
     float wy =worldHeight-((y)/(float)WINDOW_HEIGHT)*worldHeight;
-    /* cout << "x " << x << endl;
-    cout << "wx " << wx << endl;
-    cout << "y " << y << endl;
-    cout << "wy " << wy << endl;*/
-
+    
     // Shoot from silo 0, 1, or 2
 
     switch (button) {
@@ -85,7 +82,6 @@ void mouseButtonCallback( GLFWwindow* window, int button, int action, int mods )
   }
 
 
-    // Shoot from silo 0, 1, or 2
 
 }
  

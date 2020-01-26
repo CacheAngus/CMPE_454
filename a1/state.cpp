@@ -57,11 +57,15 @@ void State::updateState( float deltaT )
   // should increase with time.
   //
   // CHANGE THIS
+  // cout << currentTime<< endl;
 
-  if (randIn01() > 0.99) {	// New missile 
-
+  if (randIn01()<0.01 + (currentTime * .0005)) {	// New missile 
+    float a = randIn01();
+    if (a < 0.5){
+      a = -a;
+    }
     missilesIn.add( Missile( vec3( randIn01(), worldTop, 0), // source
-			     vec3( -0.02, -0.1, 0 ),         // velocity
+			     vec3( (0.02*a), -0.1, 0 ),         // velocity
 			     0,                              // destination y
 			     vec3( 1,1,0 ) ) );              // colour
   }
@@ -70,14 +74,14 @@ void State::updateState( float deltaT )
 
   for (i=0; i<missilesIn.size(); i++)
     if (missilesIn[i].hasReachedDestination()) {
-      // CHANGE THIS: ADD AN EXPLOSION
+      explosions.add(Circle(missilesIn[i].position(), 0.2, 0.05, vec3(1,.714,.757)));
       missilesIn.remove(i);
       i--;
     }
 
   for (i=0; i<missilesOut.size(); i++)
     if (missilesOut[i].hasReachedDestination()) {
-      // CHANGE THIS: ADD AN EXPLOSION
+      explosions.add(Circle(missilesOut[i].position(), 0.2, 0.05, vec3(1,0,1)));
       missilesOut.remove(i);
       i--;
     }
@@ -86,7 +90,7 @@ void State::updateState( float deltaT )
 
   for (i=0; i<explosions.size(); i++)
     if (explosions[i].radius() >= explosions[i].maxRadius()) {
-      // CHANGE THIS: CHECK FOR DESTROYED CITY OR SILO
+      //if position of explosion +/- explosion == any city or cilo position, remove silo/city from list
       explosions.remove(i);
       i--;
     }
@@ -123,8 +127,8 @@ void State::fireMissile( int siloIndex, float x, float y )
     // CHANGE THIS
 
     missilesOut.add( Missile( silos[siloIndex].position(),           // source
-			      speed * vec3(randIn01(),randIn01(),0), // velocity
-			      0,		                     // destination y
+			      speed *(vec3(x,y,0)-silos[siloIndex].position()), // velocity
+			      worldTop,		                     // destination y
 			      vec3( 0,1,1 ) ) );                     // colour
   }
 }
