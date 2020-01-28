@@ -94,12 +94,20 @@ void State::updateState( float deltaT )
         float minExplosionRange = explosions[i].pos[0] - 0.05;
       //if position of explosion +/- explosion == any city or cilo position, remove silo/city from list
     //find what the return of silos.position() is)
+        //cities have a feature called isHit that is empty currently but takes in a missile positioin and the explosion radiiuis
       explosions.remove(i);
       i--;
     }
 
-  // Look for incoming missiles that hit an explosion and are
-  // destroyed
+    for(i=0; i<missilesOut.size(); i++){
+        for(j=0; j<missilesIn.size(); i++){
+            if(missilesOut[i].position() == missilesIn[j].position()){
+                explosions.add(Circle(missilesOut[i].position(), 0.2, 0.05, vec3(1,0,1)));
+                missilesIn.remove(i);
+                j--;
+            }
+        }
+    }
 
   // ADD CODE HERE
 
@@ -112,7 +120,8 @@ void State::updateState( float deltaT )
     missilesOut[i].move( deltaT );
 
   for (i=0; i<explosions.size(); i++)
-    explosions[i].expand( deltaT );
+    explosions[i].expand( deltaT);
+    explosions[i].conrtact(deltaT);
 }
 
 
