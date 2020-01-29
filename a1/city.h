@@ -17,7 +17,9 @@ class City : public Building {
 
   City() {}
 
-  City( vec3 pos ) : Building( pos ) {}
+  City( vec3 pos ) : Building( pos ) {
+   p = pos;
+}
 
   // Draw the city
 
@@ -33,8 +35,17 @@ class City : public Building {
     gpuProgram->drawVertices( &verts[0], 4, GL_LINE_LOOP, vec3(1,1,1) );
   }
 
-  bool isHit( vec3 missilePos, float radius ); 
+  bool isHit( vec3 missilePos, float radius); 
+  
+ vec3 getPos(){
+	return p;
+ }
+
+ private:
+ 
+  vec3 p;
 };
+
   
 
 

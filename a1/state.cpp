@@ -90,25 +90,35 @@ void State::updateState( float deltaT )
 
   for (i=0; i<explosions.size(); i++)
     if (explosions[i].radius() >= explosions[i].maxRadius()) {
-        float maxexplosionRange = explosions[i].pos[0] + 0.05;
-        float minExplosionRange = explosions[i].pos[0] - 0.05;
-      //if position of explosion +/- explosion == any city or cilo position, remove silo/city from list
-    //find what the return of silos.position() is)
-        //cities have a feature called isHit that is empty currently but takes in a missile positioin and the explosion radiiuis
+      for (int a = 0; a<silos.size(); a++){
+	if((silos[a].position() - explosions[i].getPos()).length() <= explosions[i].radius()){
+	  silos.remove(a);
+	}
+      }
+      for(int j =0; j<cities.size(); j++){
+	if((cities[j].getPos() - explosions[i].getPos()).length() <=  explosions[i].radius()){
+	  cities.remove(j);
+	}
+      }
       explosions.remove(i);
       i--;
     }
 
-    for(i=0; i<missilesOut.size(); i++){
-        for(j=0; j<missilesIn.size(); i++){
-            if(missilesOut[i].position() == missilesIn[j].position()){
-                explosions.add(Circle(missilesOut[i].position(), 0.2, 0.05, vec3(1,0,1)));
-                missilesIn.remove(i);
-                j--;
-            }
-        }
-    }
 
+  for(i=0; i<missilesIn.size();i++){
+    for(int j=0;j<missilesOut.size();j++){
+      vec3 outPos = missilesOut[j].position();
+      vec3 inPos = missilesIn[i].position();
+      if((inPos - outPos).length() <= 0.05){
+	explosions.add(Circle(missilesIn[i].position(), 0.2, 0.05, vec3(1,.5,0)));
+	missilesIn.remove(i);
+       	i--;
+	missilesOut.remove(j);
+	//	j--;
+      }
+    }
+  }
+  
   // ADD CODE HERE
 
   // Update all the moving objects
@@ -121,7 +131,7 @@ void State::updateState( float deltaT )
 
   for (i=0; i<explosions.size(); i++)
     explosions[i].expand( deltaT);
-    explosions[i].conrtact(deltaT);
+  //  explosions[i].contract(deltaT);
 }
 
 

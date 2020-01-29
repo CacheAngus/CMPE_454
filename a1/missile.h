@@ -64,6 +64,10 @@ class Missile {
     
 
   }
+  
+  vec3 getPos(){
+   return pos1;
+  }
 
  private:
 
