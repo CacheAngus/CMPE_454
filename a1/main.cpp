@@ -13,6 +13,7 @@ float worldTop;			// set in main()
 // The "state" contains the world and manages all actions.
 
 #include "state.h"
+#include "gpuProgram.h"
 
 State *state;
 

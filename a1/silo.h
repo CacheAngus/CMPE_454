@@ -25,8 +25,9 @@ class Silo : public Building {
     return (roundsLeft > 0);
   }
 
-  void decrMissiles() {
-    roundsLeft--;
+  int decrMissiles() {
+    roundsLeft--;  
+    return roundsLeft;
   }
 
   vec3 position() {
@@ -49,9 +50,17 @@ class Silo : public Building {
     }
 
     gpuProgram->drawVertices( verts, NUM_SEGMENTS+1, GL_TRIANGLE_FAN, vec3(1,1,1) );
+    
+    /*vec3 *verts2 = new vec3[roundsLeft];
+    verts2[0]= pos;
+    for(int i=0; i<roundsLeft; i++)
+      verts2[i+1] = vec3(0, 1, 0);
+    gpuProgram->drawVertices( verts2, roundsLeft, GL_LINES, vec3(1,0.75, 0.87) );*/
 
     delete [] verts;
+    //delete [] verts2;
   }
+  
 
  private:
 

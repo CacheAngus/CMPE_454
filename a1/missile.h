@@ -52,9 +52,6 @@ class Missile {
 
   bool hasReachedDestination() {
 	//treat the different directions
-    /*cout << pos1.y << endl;
-    cout << velocity.y << endl;
-    cout << destY<< endl;*/
     if(velocity.y >=0){
 	return pos1.y >= destY;
     }

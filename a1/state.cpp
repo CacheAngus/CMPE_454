@@ -8,6 +8,7 @@
 
 // Draw each of the objects in the world
 
+int score {0};
 
 void State::draw() 
 
@@ -108,6 +109,10 @@ void State::updateState( float deltaT )
       i--;
     }
 
+  /*  for (int a=0; a<silos.size(); a++){
+    
+      }*/
+  
 for (int k=0; k<contractions.size();k++){
   if(contractions[k].radius() <= 0)
 	 contractions.remove(k);
@@ -122,7 +127,10 @@ for (int k=0; k<contractions.size();k++){
 	missilesIn.remove(i);
        	i--;
 	missilesOut.remove(j);
-	//	j--;
+	j--;
+	score++; //increment score
+	//cout << score << endl;
+	
       }
     }
   }
@@ -152,8 +160,9 @@ void State::fireMissile( int siloIndex, float x, float y )
   const float speed = 0.3;
     
   if (silos[siloIndex].canShoot()) {
+    explosions.add(Circle(vec3(x, y, 0), 0.2, 0.02, vec3(1,0,0.25)));
 
-    silos[siloIndex].decrMissiles();
+    int roundsLeft =  silos[siloIndex].decrMissiles();
 
     // CHANGE THIS
 

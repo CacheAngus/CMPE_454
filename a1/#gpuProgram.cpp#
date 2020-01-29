@@ -120,6 +120,7 @@ void GPUProgram::drawVertices( vec3 *verts, int n, GLenum drawType, vec3 colour 
 
   GLuint VBO;
   
+  
   glGenBuffers( 1, &VBO );
   glBindBuffer( GL_ARRAY_BUFFER, VBO );
   glBufferData( GL_ARRAY_BUFFER, n * sizeof(vec3), verts, GL_STREAM_DRAW );
@@ -128,6 +129,7 @@ void GPUProgram::drawVertices( vec3 *verts, int n, GLenum drawType, vec3 colour 
 
   glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, 0 );
   glEnableVertexAttribArray( 0 );
+
 
   // Set colour
   
@@ -142,23 +144,23 @@ void GPUProgram::drawVertices( vec3 *verts, int n, GLenum drawType, vec3 colour 
   glDisableVertexAttribArray( 0 );
   glBindBuffer( GL_ARRAY_BUFFER, 0 );
   glDeleteBuffers( 1, &VBO );
+
 }
 
-void GPUProgram::drawText( vec3 *verts, int n, GLenum drawType, vec3 colour )
-
-{
-  // Build VBO
+void GPUProgram::drawText(vec3 *verts, int n, GLenum drawType, vec3 colour){
 
   GLuint VBO;
   
+  
   glGenBuffers( 1, &VBO );
   glBindBuffer( GL_ARRAY_BUFFER, VBO );
-  glBufferData( GL_ARRAY_BUFFER, n * sizeof(vec3), verts, GL_STREAM_DRAW );
+  glBufferData( GL_ARRAY_BUFFER, n * sizeof(vec3), verts, GL_STATIC_DRAW );
 
   // Attribute 0
 
   glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 0, 0 );
   glEnableVertexAttribArray( 0 );
+
 
   // Set colour
   
@@ -174,4 +176,3 @@ void GPUProgram::drawText( vec3 *verts, int n, GLenum drawType, vec3 colour )
   glBindBuffer( GL_ARRAY_BUFFER, 0 );
   glDeleteBuffers( 1, &VBO );
 }
-

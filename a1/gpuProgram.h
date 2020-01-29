@@ -68,6 +68,8 @@ class GPUProgram {
 
   void drawVertices( vec3 *verts, int n, GLenum drawType, vec3 colour );
 
+  void drawText(vec3 *verts, int n, GLenum drawType, vec3 colour);
+
   void glErrorReport( char *where ) {
 
     GLuint errnum;
