@@ -47,6 +47,8 @@ class State {
   seq<Missile> missilesIn;
   seq<Missile> missilesOut;
   seq<Circle> explosions;
+  seq<Circle> contractions;
+	
 };
 
 

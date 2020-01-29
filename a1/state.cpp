@@ -34,6 +34,8 @@ void State::draw()
 
   for (i=0; i<explosions.size(); i++)
     explosions[i].draw( gpuProgram );
+  for( i=0; i<contractions.size(); i++)
+    contractions[i].draw(gpuProgram);
 
   gpuProgram->deactivate();
 }
@@ -89,7 +91,7 @@ void State::updateState( float deltaT )
   // Look for terminating explosions
 
   for (i=0; i<explosions.size(); i++)
-    if (explosions[i].radius() >= explosions[i].maxRadius()) {
+    if (explosions[i].radius() >= explosions[i].maxRadius()){
       for (int a = 0; a<silos.size(); a++){
 	if((silos[a].position() - explosions[i].getPos()).length() <= explosions[i].radius()){
 	  silos.remove(a);
@@ -100,10 +102,16 @@ void State::updateState( float deltaT )
 	  cities.remove(j);
 	}
       }
-      explosions.remove(i);
+      // add to list of contracting explosions
+      contractions.add(explosions[i]);
+      explosions.remove(i); //remove from explosions
       i--;
     }
 
+for (int k=0; k<contractions.size();k++){
+  if(contractions[k].radius() <= 0)
+	 contractions.remove(k);
+ }
 
   for(i=0; i<missilesIn.size();i++){
     for(int j=0;j<missilesOut.size();j++){
@@ -131,7 +139,8 @@ void State::updateState( float deltaT )
 
   for (i=0; i<explosions.size(); i++)
     explosions[i].expand( deltaT);
-  //  explosions[i].contract(deltaT);
+  for (i=0; i<contractions.size(); i++)
+    contractions[i].contract(deltaT);
 }
 
 
