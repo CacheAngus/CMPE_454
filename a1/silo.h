@@ -26,7 +26,7 @@ class Silo : public Building {
   }
 
   void decrMissiles() {
-    roundsLeft--;
+    roundsLeft--;  
   }
 
   vec3 position() {
@@ -50,8 +50,10 @@ class Silo : public Building {
 
     gpuProgram->drawVertices( verts, NUM_SEGMENTS+1, GL_TRIANGLE_FAN, vec3(1,1,1) );
 
+
     delete [] verts;
   }
+  
 
  private:
 

@@ -49,7 +49,10 @@ class Circle {
   void expand( float deltaT ) {
     r = r + deltaT * speed;
   }
-
+  
+  void contract(float deltaT){
+    r = r - deltaT*speed;
+  }
   // Return the current and max radii
 
   float radius() {
@@ -59,6 +62,10 @@ class Circle {
   float maxRadius() {
     return maxR;
   }
+
+ vec3 getPos(){
+ return pos;
+ }
 
  private:
 

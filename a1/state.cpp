@@ -7,8 +7,6 @@
 
 
 // Draw each of the objects in the world
-
-
 void State::draw() 
 
 {
@@ -34,15 +32,15 @@ void State::draw()
 
   for (i=0; i<explosions.size(); i++)
     explosions[i].draw( gpuProgram );
+    
+  for( i=0; i<contractions.size(); i++)
+    contractions[i].draw(gpuProgram);
 
   gpuProgram->deactivate();
 }
 
 
 // Update the state of the world after some time interval, deltaT
-//
-// CHANGE ALL OF THIS FUNCTION
-
 
 void State::updateState( float deltaT )
 
@@ -55,9 +53,6 @@ void State::updateState( float deltaT )
 
   // Generate some new missiles.  The rate of missile generation
   // should increase with time.
-  //
-  // CHANGE THIS
-  // cout << currentTime<< endl;
 
   if (randIn01()<0.01 + (currentTime * .0005)) {	// New missile 
     float a = randIn01();
@@ -89,15 +84,42 @@ void State::updateState( float deltaT )
   // Look for terminating explosions
 
   for (i=0; i<explosions.size(); i++)
-    if (explosions[i].radius() >= explosions[i].maxRadius()) {
-      //if position of explosion +/- explosion == any city or cilo position, remove silo/city from list
-      explosions.remove(i);
+    if (explosions[i].radius() >= explosions[i].maxRadius()){
+      for (int a = 0; a<silos.size(); a++){
+          if((silos[a].position() - explosions[i].getPos()).length() <= explosions[i].radius()){
+              silos.remove(a);
+          }
+      }
+      for(int j =0; j<cities.size(); j++){
+          if((cities[j].getPos() - explosions[i].getPos()).length() <=  explosions[i].radius()){
+              cities.remove(j);
+          }
+      }
+      // add to list of contracting explosions
+      contractions.add(explosions[i]);
+      explosions.remove(i); //remove from explosions
       i--;
     }
+  
+for (int k=0; k<contractions.size();k++){
+  if(contractions[k].radius() <= 0)
+	 contractions.remove(k);
+ }
 
-  // Look for incoming missiles that hit an explosion and are
-  // destroyed
-
+  for(i=0; i<missilesIn.size();i++){
+    for(int j=0;j<missilesOut.size();j++){
+      vec3 outPos = missilesOut[j].position();
+      vec3 inPos = missilesIn[i].position();
+      if((inPos - outPos).length() <= 0.05){
+        explosions.add(Circle(missilesIn[i].position(), 0.2, 0.05, vec3(1,.5,0)));
+        missilesIn.remove(i);
+       	i--;
+	    missilesOut.remove(j);
+	    j--;
+      }
+    }
+  }
+  
   // ADD CODE HERE
 
   // Update all the moving objects
@@ -109,7 +131,9 @@ void State::updateState( float deltaT )
     missilesOut[i].move( deltaT );
 
   for (i=0; i<explosions.size(); i++)
-    explosions[i].expand( deltaT );
+    explosions[i].expand( deltaT);
+  for (i=0; i<contractions.size(); i++)
+    contractions[i].contract(deltaT);
 }
 
 
@@ -121,11 +145,9 @@ void State::fireMissile( int siloIndex, float x, float y )
   const float speed = 0.3;
     
   if (silos[siloIndex].canShoot()) {
+    explosions.add(Circle(vec3(x, y, 0), 0.2, 0.02, vec3(1,0,0.25)));
 
     silos[siloIndex].decrMissiles();
-
-    // CHANGE THIS
-
     missilesOut.add( Missile( silos[siloIndex].position(),           // source
 			      speed *(vec3(x,y,0)-silos[siloIndex].position()), // velocity
 			      worldTop,		                     // destination y
