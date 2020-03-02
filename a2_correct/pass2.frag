@@ -50,14 +50,51 @@ void main()
   // prevent z-fighting.
   if(shadowDepth < fragDepth){
   fragColour = vec4(shadowDepth, shadowDepth, shadowDepth, 1.0);
-  return;
-}
+
+	}
+
   // YOUR CODE HERE
-  mediump float NdotL = dot(normalize(normal),lightDir);
+ mediump vec3 Iin = vec3( 1.0, 1.0, 1.0 ); // incoming light
+  mediump vec3 Ia  = vec3( 0.1, 0.1, 0.1 ); // ambient light
+  mediump vec3 kd  = colour;		    // kd = surface colour from calling program
+  mediump vec3 ks  = vec3( 0.4, 0.4, 0.4 ); // ks = specular coefficients
+  mediump float shininess = 10.0;	    // shininess = specular exponent
+
+  // Since the normal is interpolated, it might not be unit length.  So normalize it.
+
+  mediump vec3 N = normalize( normal);
+  mediump vec3 V = normalize( -1.0 * vec3(ccsLightPos));       // Looking toward the eye at (0,0,0) in the VCS 
+
+  mediump float NdotL = dot( N, lightDir );
+
+  // Compute the outgoing colour
+
+  mediump vec3 Iout = Ia;
+
   
-  if(NdotL < 0.0)
-   NdotL = 0.0;
-  vec3 diffuseColour = NdotL*colour;
+  if (NdotL > 0.0) {  // light is above the surface
+
+    // diffuse component
+
+       
+     mediump vec3 Idif = NdotL * vec3( kd.r * Iin.r, kd.g * Iin.g, kd.b * Iin.b ); 
+
+    // specular component
+
+  
+      
+      mediump vec3 R = (2.0 * NdotL) * N - lightDir;
+
+      mediump float RdotV = dot( R, V );
+
+      mediump vec3 Ispec = Ia;
+
+      if (RdotV > 0.0)
+	Ispec = pow( RdotV, shininess ) * vec3( ks.r * Iin.r, ks.g * Iin.g, ks.b * Iin.b );
+      Iout += Idif + Ispec;
+
+  }
+
 
   // Compute illumination.  Initially just do diffuse "N dot L".  Later do Phong.
   if(texturing){
@@ -65,17 +102,10 @@ void main()
   fragColour = textColour;
   }
   else{
-   fragColour = vec4(diffuseColour, 1.0);
+   fragColour = vec4(Iout, 1.0f);
   }
-  // YOUR CODE HERE
 
-  // Choose the colour either from the object's texture (if
-  // 'texturing' == 1) or from the input colour.
 
-  // YOUR CODE HERE
-
-  // Output the fragment colour, modified by the illumination model
-  // and shadowing.
   
-  	// CHANGE THIS
+
 }
