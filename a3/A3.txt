@@ -1,0 +1,39 @@
+CISC 454 Assignment 3
+Due April 3, 2020
+
+You are to implement the effects of
+
+ - pixel antialiasing, 
+ - glossy reflection, and
+ - transparency
+
+in a raytracer.  See "YOUR CODE HERE" in the supplied code.  The
+'exampleOutput' directory contains examples of correct output for
+the three effects.
+
+Undergraduates may work in groups of two.  Graduate students must work
+individually.
+
+After getting your code working, create an interesting scene that
+demonstrates each of these effects.  You may use digital models from
+elsewhere and may use 3D editors to create your scene.  If you do
+that, the objects will have to be in Wavefront (.obj) format.  Note
+that not all Wavefront objects are parsable by the code here.
+
+To Hand In
+
+  The code must compile and run on Windows or Linux.
+  
+  Make a directory called 'a3'.  In that directory, put
+
+    - These files: *.cpp, *.h, Makefile, wavefront.frag, wavefront.vert
+
+    - a README.txt file with your name(s), student number(s), and
+      email address(es)
+
+    - two screen captured images in PNG format showing your one
+      interesting scene and showing the three effects.
+
+  Create a ZIP archive of the a3 directory.
+
+  Email the archive to jstewart@cs.queensu.ca .

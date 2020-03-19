@@ -1,0 +1,92 @@
+# Test of transparent triangles
+
+eye        
+  -2.25354 -8.91023 4.23074
+  0.0323313 0.148753 0.665687
+  0.0569974 0.353119 0.93384
+  0.438861
+
+light
+  0 0 100
+  1 1 1
+
+material
+  floor       # name
+  0 0 0       # ambient reflectivity (Ka)
+  1 1 1       # diffuse reflectivity (Kd)
+  0 0 0       # specular reflectivity (Ks)
+  10          # shininess (n)
+  1           # glossiness (g)
+  0 0 0       # emission (Ie)
+  1           # opacity (alpha)
+  data/brick.ppm   # texture filename (- means none)
+  -           # bump map filename (- means none)
+
+material
+  glass       # name
+  0 0 0       # ambient reflectivity (Ka)
+  .3 .5 .3    # diffuse reflectivity (Kd)
+  0 0 0       # specular reflectivity (Ks)
+  10          # shininess (n)
+  1           # glossiness (g)
+  0 0 0       # emission (Ie)
+  0.2         # opacity (alpha)
+  -           # texture filename
+  -           # bump map filename (- means none)
+
+material
+  red         # name
+  0.5 0 0       # ambient reflectivity (Ka)
+  .7 0 0       # diffuse reflectivity (Kd)
+  .3 .3 .3       # specular reflectivity (Ks)
+  10          # shininess (n)
+  1           # glossiness (g)
+  0 0 0       # emission (Ie)
+  1           # opacity (alpha)
+  -           # texture filename (- means none)
+  -           # bump map filename (- means none)
+
+# floor
+
+triangle
+  -2.0 -2.0 0.0 / 0 0
+   2.0 -2.0 0.0 / 1 0
+   2.0  2.0 0.0 / 1 1
+  floor
+
+triangle
+   2.0  2.0 0.0 / 1 1
+  -2.0  2.0 0.0 / 0 1
+  -2.0 -2.0 0.0 / 0 0
+  floor
+
+# tetrahedron
+
+triangle                 # oriented downward
+  -.940 -.342 1.0
+  0.174 0.985 1.0
+  0.766 -.643 1.0
+  glass
+
+triangle
+  0.174 0.985 1.0
+  -.940 -.342 1.0
+  0.000 0.000 2.5
+  glass
+
+triangle
+  0.766 -.643 1.0
+  0.174 0.985 1.0
+  0.000 0.000 2.5
+  glass
+
+triangle
+  -.940 -.342 1.0
+  0.766 -.643 1.0
+  0.000 0.000 2.5
+  glass
+
+sphere
+  1           # radius
+  .5 -1 1     # centre
+  red         # material name

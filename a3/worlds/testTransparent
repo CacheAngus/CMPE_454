@@ -1,0 +1,99 @@
+# Test of transparent triangular prism
+
+eye        
+  4.17141 -7.11523 6.15188
+  0.0323313 0.148753 0.665687
+  -0.268896 0.478224 0.836061
+  0.395247
+
+light
+  1 1 2
+  1 1 1
+
+material
+  floor       # name
+  0 0 0       # ambient reflectivity (Ka)
+  1 1 1       # diffuse reflectivity (Kd)
+  0 0 0       # specular reflectivity (Ks)
+  10          # shininess (n)
+  1           # glossiness (g)
+  0 0 0       # emission (Ie)
+  1           # opacity (alpha)
+  data/brick.ppm   # texture filename (- means none)
+  -           # bump map filename (- means none)
+
+material
+  glass       # name
+  0 0 0       # ambient reflectivity (Ka)
+  0.84 0.93 0.89 # Kd
+  0 0 0       # Ks
+  10          # shininess (n)
+  1           # glossiness (g)
+  0 0 0       # emission (Ie)
+  0.1         # opacity (alpha)
+  -           # texture filename
+  -           # bump map filename (- means none)
+
+# floor
+
+triangle
+  -2.0 -2.0 0.0 / 0 0
+   2.0 -2.0 0.0 / 1 0
+   2.0  2.0 0.0 / 1 1
+  floor
+
+triangle
+   2.0  2.0 0.0 / 1 1
+  -2.0  2.0 0.0 / 0 1
+  -2.0 -2.0 0.0 / 0 0
+  floor
+
+# triangular prism
+
+triangle                 # bottom oriented downward
+  -.940 -.342 1.0
+  0.174 0.985 1.0
+  0.766 -.643 1.0
+  glass
+
+triangle                 # top oriented upward
+  0.174 0.985 1.2
+  -.940 -.342 1.2
+  0.766 -.643 1.2
+  glass
+
+triangle                 # side
+  0.174 0.985 1.0
+  -.940 -.342 1.0
+  -.940 -.342 1.2
+  glass
+
+triangle                 # side
+  0.174 0.985 1.0
+  -.940 -.342 1.2
+  0.174 0.985 1.2
+  glass
+
+triangle                 # side
+  0.766 -.643 1.0
+  0.174 0.985 1.0
+  0.174 0.985 1.2
+  glass
+
+triangle                 # side
+  0.766 -.643 1.0
+  0.174 0.985 1.2
+  0.766 -.643 1.2
+  glass
+
+triangle                 # side
+  -.940 -.342 1.0
+  0.766 -.643 1.0
+  0.766 -.643 1.2
+  glass
+
+triangle                 # side
+  -.940 -.342 1.0
+  0.766 -.643 1.2
+  -.940 -.342 1.2
+  glass

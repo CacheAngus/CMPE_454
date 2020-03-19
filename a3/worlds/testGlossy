@@ -1,0 +1,65 @@
+# A simple test scene with a texture and floor
+
+eye
+  -7.10419 -0.050747 1.58999
+  0 0 0.4
+  0.165214 -0.00155897 0.986256
+  0.239309
+
+light
+  -1 0 1      # position
+  1 1 1       # colour
+
+
+material
+  floor       # name
+  0 0 0       # ambient reflectivity (Ka)
+  0.4 0.4 0.4 # diffuse reflectivity (Kd)
+  0 0 0       # specular reflectivity (Ks)
+  100         # shininess (n)
+  .990        # glossiness (g)
+  0 0 0       # emission (Ie)
+  1.0         # opacity (alpha)
+  -           # texture filename (- means none)
+  -           # bump map filename (- means none)
+
+material
+  glass       # name
+  0 0 0       # ambient reflectivity (Ka)
+  1 1 1       # diffuse reflectivity (Kd)
+  0 0 0       # specular reflectivity (Ks)
+  1           # shininess (n)
+  1           # glossiness (g)
+  0 0 0       # emission (Ie)
+  1           # opacity (alpha)
+  data/musicGlass.ppm  # texture filename (- means none)
+  -           # bump map filename (- means none)
+
+# stained glass window
+
+triangle
+  1 1 0 / 0 0
+  1 -1 0 / 1 0
+  1 1 1 / 0 1
+  glass
+
+triangle
+  1 -1 0 / 1 0
+  1 -1 1 / 1 1
+  1 1 1 / 0 1
+  glass
+
+
+# glossy floor
+
+triangle
+  -10 -10 0 / 0 0
+  10 -10 0 / 1 0
+  -10 10 0 / 0 1
+  floor
+
+triangle
+  10 -10 0 / 1 0
+  10 10 0 / 1 1
+  -10 10 0 / 0 1
+  floor
