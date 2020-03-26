@@ -192,14 +192,46 @@ vec3 Scene::raytrace( vec3 &rayStart, vec3 &rayDir, int depth, int thisObjIndex,
 
     // Glossy reflection
     //
-    // Cast 'glossyIterations' random rays from P centred on direction
-    // R using glossiness 'g' to control the spread of the rays.  For
+   
+
+  vec3 glossyIout = vec3(0.0,0.0,0.0);
+
+    //   For
     // glossiness 'g', the half angle of the cone of rays is
-    // arccos(g).  Average the *reflected* colours of the rays and add
+    // arccos(g).
+    float halfang = acos(g);
+
+    //need the perpendiculars
+    vec3 u = R.perp1();
+    vec3 v = R.perp2();
+
+    //l is constant
+    float l = 1.0/tan(halfang);
+    
+   // Cast 'glossyIterations' random rays from P centred on direction
+    // R using glossiness 'g' to control the spread of the rays.
+    for(int i = 0; i < glossyIterations; i++){
+        float a;
+        float b;
+	    do {
+    //do rejection sampling to ensure that a and b are < 1.0 but are also randomly sent out
+	     a = 2 * static_cast <float>( rand() ) / RAND_MAX - 1;
+  	   b = 2 * static_cast <float>( rand() ) / RAND_MAX - 1;
+	   } while(a*a + b*b > 1.0);
+
+  //after getting new points, find the location of the point on the disk
+      vec3 R_new = (l*R + a*u + b*v).normalize();
+
+      vec3 Iin = raytrace( P, R_new, depth, objIndex, objPartIndex );
+
+      //i also copied this code so also needs to be checked over so i understand wtf is going on
+      glossyIout = glossyIout + calcIout( N, R_new, E, E, vec3(0.0, 0.0, 0.0) , mat->ks, mat->n, Iin );
+    }
+     //  Average the *reflected* colours of the rays and add
     // that average to Iout.
+    Iout = Iout + (1.0f / glossyIterations) * glossyIout; 
 
-
-    // YOUR CODE HERE
+   
   }
   
   // Add direct contributions from lights
@@ -359,23 +391,60 @@ vec3 Scene::pixelColour( int x, int y )
 
   vec3 result;
 
-#if 1
+#if 0
 
-  vec3 dir = (llCorner + (x+0.5)*right + (y+0.5)*up).normalize(); // pixel centre
 
-  result = raytrace( eye->position, dir, 0, -1, -1 );
 
 #else
 
   // Antialias through a pixel using ('numPixelSamples' x 'numPixelSamples')
   // rays.  Use a regular pattern if 'jitter' is false; use a jittered
   // patter if 'jitter' is true.
+    vec3 dir = (llCorner + (x+0.5)*right + (y+0.5)*up).normalize(); // pixel centre
+
 
   // YOUR CODE HERE
+  int k = numPixelSamples * numPixelSamples;
+  int i = 0;
+      vec3 sumC = (0,0,0);
+
+  //cycle through pixels
+  for (i; i < k; i++){
+    float jit_x,jit_y; //pixel location
+    //regular subdivison, need to find these subdvisions and then change the pixel placmenet in them from center
+    if(jitter){
+      jit_x = static_cast <float>( rand() ) / RAND_MAX;
+      jit_y = static_cast <float>( rand() ) / RAND_MAX;
+     // x -= 0.5
+     //y -= 0.5
+    } else {
+      jit_x = 0;
+      jit_y = 0;
+    }
+
+    //up and right vectors are used to find subdivisions-i straight up copied this code tbh so i need to look at it more
+    float a = (i % numPixelSamples - static_cast <float>( (numPixelSamples - 1) )/2);
+    float b = (i / numPixelSamples - static_cast <float>( (numPixelSamples - 1) )/2);
+    dir = dir +  a / numPixelSamples * right +  b / numPixelSamples * up;
+
+    //Make the jitter direction with biases in the x and y location directions
+    //if there is no jitter there is no change in direction so it's regularly distribed
+    dir = dir + ( jit_x/numPixelSamples * right) + (jit_y/numPixelSamples*up);
+
+    
+    //since the equation for Pixel P colour is the average sum of the colour by the integral of them at
+    // the location over the area, need to sum each ray instad of just sending one reguarly
+    sumC  = sumC + raytrace( eye->position, dir, 0, -1, -1 );
+
+  }
+
   //
   // Change the "#if 1" above to "#if 0" once your code here is ready.
 
 #endif
+
+  //results are the average of the values in the pixel 
+  result = (1.0/k)*sumC;
 
 
   if (storingRays)
