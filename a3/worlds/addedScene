@@ -1,0 +1,77 @@
+eye
+  -7.10419 -0.050747 1.58999
+  0 0 0.4
+  0.165214 -0.00155897 0.986256
+  0.239309
+
+light
+  -1 0 1      # position
+  1 1 1       # colour
+
+
+material
+  floor       # name
+  0 0 0       # ambient reflectivity (Ka)
+  0.4 0.4 0.4 # diffuse reflectivity (Kd)
+  .1 .1 .1    # specular reflectivity (Ks)
+  100         # shininess (n)
+  .999        # glossiness (g)
+  0 0 0       # emission (Ie)
+  1           # opacity (alpha)
+  -           # texture filename (- means none)
+  -           # bump map filename (- means none)
+
+material
+  glass       # name
+  0 0 0       # ambient reflectivity (Ka)
+  0.84 0.93 0.89 # Kd
+  0 0 0       # Ks
+  10          # shininess (n)
+  1           # glossiness (g)
+  0 0 0       # emission (Ie)
+  0.1         # opacity (alpha)
+  -           # texture filename
+  -           # bump map filename (- means none)
+
+
+# glass object
+
+triangle                 # bottom oriented downward
+  -.940 -.342 1.0
+  0.174 0.985 1.0
+  0.766 -.643 1.0
+  glass
+
+triangle                 # top oriented upward
+  0.174 0.985 1.2
+  -.940 -.342 1.2
+  0.766 -.643 1.2
+  glass
+
+triangle                 # side
+  0.174 0.985 1.0
+  -.940 -.342 1.0
+  -.940 -.342 1.2
+  glass
+
+triangle                 # side
+  0.174 0.985 1.0
+  -.940 -.342 1.2
+  0.174 0.985 1.2
+  glass
+
+wavefront dog.obj
+
+
+#glossy floor
+triangle
+  -10 -10 0 / 0 0
+  10 -10 0 / 1 0
+  -10 10 0 / 0 1
+  floor
+
+triangle
+  10 -10 0 / 1 0
+  10 10 0 / 1 1
+  -10 10 0 / 0 1
+  floor

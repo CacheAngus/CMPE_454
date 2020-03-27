@@ -223,7 +223,7 @@ vec3 Scene::raytrace( vec3 &rayStart, vec3 &rayDir, int depth, int thisObjIndex,
       vec3 R_new = (l*R + a*u + b*v).normalize();
 
       vec3 Iin = raytrace( P, R_new, depth, objIndex, objPartIndex );
-
+      
       //i also copied this code so also needs to be checked over so i understand wtf is going on
       glossyIout = glossyIout + calcIout( N, R_new, E, E, vec3(0.0, 0.0, 0.0) , mat->ks, mat->n, Iin );
     }
@@ -338,20 +338,24 @@ vec3 Scene::raytrace( vec3 &rayStart, vec3 &rayDir, int depth, int thisObjIndex,
 bool Scene::findRefractionDirection( vec3 &rayDir, vec3 &N, vec3 &refractionDir )
 
 {
-  return false;
+// vec3 M = (N^(rayDir^N))/(abs((N^(rayDir^N))));
+// float theta_i = atan2f((rayDir*N),(rayDir*M)); 
+// float theta_r;
+// //incoming angle can be computer from two argument arctan2 by calc projection of Ri onto N and M
+// if()//entering surface.)
+//   //how do we check this? Is there a specific direction that indicates going from air to glass?
+//   {
+//   theta_r = asin((sin(theta_i)*1.008)/1.510);
+//   refractionDir = cos(theta_i)*N + sin(theta_r)*M;
+// }
+// //if going from glass to air will be total internal reflection since glass is more dense
+// else {
+   return false;
+// }
 
-  // YOUR CODE HERE
+// return true;
+
 }
-
-
-
-
-// Calculate the outgoing intensity due to light Iin entering from
-// direction L and exiting to direction E, with normal N.  Reflection
-// direction R is provided, along with the material properties Kd, 
-// Ks, and n.
-//
-//       Iout = Iin * ( Kd (N.L) + Ks (R.V)^n )
 
 vec3 Scene::calcIout( vec3 N, vec3 L, vec3 E, vec3 R,
                         vec3 Kd, vec3 Ks, float ns,
@@ -361,6 +365,9 @@ vec3 Scene::calcIout( vec3 N, vec3 L, vec3 E, vec3 R,
   // Don't illuminate from the back of the surface
 
   if (N * L <= 0)
+
+
+//       Iout = Iin * ( Kd (N.L) + Ks (R.V)^n )
     return blackColour;
 
   // Both E and L are in front:
@@ -392,7 +399,8 @@ vec3 Scene::pixelColour( int x, int y )
   vec3 result;
 
 #if 0
-
+  vec3 dir = (llCorner + (x + 0.5)*right + (y + 0.5)*up).normalize(); // pixel centre
+  raytrace(eye->position, dir, 0, -1, -1);
 
 
 #else
@@ -404,20 +412,17 @@ vec3 Scene::pixelColour( int x, int y )
 
 
   // YOUR CODE HERE
-  int k = numPixelSamples * numPixelSamples;
+  int k = static_cast<int>(numPixelSamples * numPixelSamples);
   int i = 0;
       vec3 sumC = (0,0,0);
-
-  //cycle through pixels
   for (i; i < k; i++){
     float jit_x,jit_y; //pixel location
     //regular subdivison, need to find these subdvisions and then change the pixel placmenet in them from center
-    if(jitter){
-      jit_x = static_cast <float>( rand() ) / RAND_MAX;
-      jit_y = static_cast <float>( rand() ) / RAND_MAX;
-     // x -= 0.5
-     //y -= 0.5
-    } else {
+	if (jitter) {
+		jit_x = static_cast <float>(rand()) / RAND_MAX;
+		jit_y = static_cast <float>(rand()) / RAND_MAX;
+	} else {
+  //cycle through pixels
       jit_x = 0;
       jit_y = 0;
     }

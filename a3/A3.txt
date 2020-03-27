@@ -37,3 +37,10 @@ To Hand In
   Create a ZIP archive of the a3 directory.
 
   Email the archive to jstewart@cs.queensu.ca .
+
+To Do:
+
+- figure out the direction of the ray for the refraction function
+- find null pointer error, should be in antialiasing
+- build new scene, added dog.obj file and addedScene file, 
+  should be able to call this through a3.vcxproj.user but not sure. maybe one other spot
