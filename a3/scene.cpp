@@ -413,11 +413,12 @@ vec3 Scene::pixelColour( int x, int y )
 
   // YOUR CODE HERE
   int k = static_cast<int>(numPixelSamples * numPixelSamples);
-  int i = 0;
-      vec3 sumC = (0,0,0);
-  for (i; i < k; i++){
+  //int i = 0;
+  vec3 sumC = vec3(0.0, 0.0, 0.0);
+  for (int i = 0; i < k; i++){
     float jit_x,jit_y; //pixel location
     //regular subdivison, need to find these subdvisions and then change the pixel placmenet in them from center
+	
 	if (jitter) {
 		jit_x = static_cast <float>(rand()) / RAND_MAX;
 		jit_y = static_cast <float>(rand()) / RAND_MAX;
@@ -440,7 +441,7 @@ vec3 Scene::pixelColour( int x, int y )
     //since the equation for Pixel P colour is the average sum of the colour by the integral of them at
     // the location over the area, need to sum each ray instad of just sending one reguarly
     sumC  = sumC + raytrace( eye->position, dir, 0, -1, -1 );
-
+	
   }
 
   //
