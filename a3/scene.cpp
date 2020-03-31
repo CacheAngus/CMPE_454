@@ -314,9 +314,14 @@ vec3 Scene::raytrace( vec3 &rayStart, vec3 &rayDir, int depth, int thisObjIndex,
 
   if (opacity < 1.0) { // not completely opaque
 
-    // YOUR CODE HERE
-    //
+    // YOUR CODE HERE-added these lines, have no idea if they are right or will be useful
+	  vec3 refractionDir = vec3(0, 0, 0);
+	  bool TIR = findRefractionDirection(rayDir, N, refractionDir);
     // Use the 'findRefractionDirection' function (below).
+	  if (TIR) {
+		  Iout = Iout + refractionDir;
+
+	  }
   }
 
   return Iout;
@@ -338,22 +343,29 @@ vec3 Scene::raytrace( vec3 &rayStart, vec3 &rayDir, int depth, int thisObjIndex,
 bool Scene::findRefractionDirection( vec3 &rayDir, vec3 &N, vec3 &refractionDir )
 
 {
-// vec3 M = (N^(rayDir^N))/(abs((N^(rayDir^N))));
-// float theta_i = atan2f((rayDir*N),(rayDir*M)); 
-// float theta_r;
+  //cant figure out what M is supposed to be
+ vec3 M = 0;
+ float theta_i = atan2f((rayDir*N),(rayDir*M)); 
+ float theta_r;
+ //the bracket were being weird about exponentials lol
+ float angle = N * rayDir;
 // //incoming angle can be computer from two argument arctan2 by calc projection of Ri onto N and M
-// if()//entering surface.)
-//   //how do we check this? Is there a specific direction that indicates going from air to glass?
-//   {
-//   theta_r = asin((sin(theta_i)*1.008)/1.510);
-//   refractionDir = cos(theta_i)*N + sin(theta_r)*M;
-// }
+ float totalInternalCheck = 1 - ((1.510)*(1.510))*(1 - (angle * angle));
+ if(totalInternalCheck >= 0)
+   {
+	 //this means it is not total internal reflection, 
+   theta_r = asin((sin(theta_i)*1.008)/1.510);
+   refractionDir = cos(theta_i)*N + sin(theta_r)*M;
+   return true;
+ }
 // //if going from glass to air will be total internal reflection since glass is more dense
-// else {
-   return false;
-// }
+ else {
+   //not sure but may need to also set the refractionDir for total internal refraction which should just be snells law again but 
+   //angle theta i = theta r = like 42 degrees or smt
 
-// return true;
+   return false;
+ }
+
 
 }
 
@@ -428,7 +440,7 @@ vec3 Scene::pixelColour( int x, int y )
       jit_y = 0;
     }
 
-    //up and right vectors are used to find subdivisions-i straight up copied this code tbh so i need to look at it more
+    //up and right vectors are used to find subdivisions while also assigning the new random directions
     float a = (i % numPixelSamples - static_cast <float>( (numPixelSamples - 1) )/2);
     float b = (i / numPixelSamples - static_cast <float>( (numPixelSamples - 1) )/2);
     dir = dir +  a / numPixelSamples * right +  b / numPixelSamples * up;
