@@ -224,7 +224,6 @@ vec3 Scene::raytrace( vec3 &rayStart, vec3 &rayDir, int depth, int thisObjIndex,
 
       vec3 Iin = raytrace( P, R_new, depth, objIndex, objPartIndex );
       
-      //i also copied this code so also needs to be checked over so i understand wtf is going on
       glossyIout = glossyIout + calcIout( N, R_new, E, E, vec3(0.0, 0.0, 0.0) , mat->ks, mat->n, Iin );
     }
      //  Average the *reflected* colours of the rays and add
@@ -314,12 +313,15 @@ vec3 Scene::raytrace( vec3 &rayStart, vec3 &rayDir, int depth, int thisObjIndex,
 
   if (opacity < 1.0) { // not completely opaque
 
-    // YOUR CODE HERE-added these lines, have no idea if they are right or will be useful
+    // YOUR CODE HERE-
+   
 	  vec3 refractionDir = vec3(0, 0, 0);
 	  bool TIR = findRefractionDirection(rayDir, N, refractionDir);
+    vec3 raytraceRefracDir = raytrace(P, refractionDir, depth, objIndex, objPartIndex);
+
     // Use the 'findRefractionDirection' function (below).
 	  if (TIR) {
-		  Iout = Iout + refractionDir;
+		  Iout = Iout + raytraceRefracDir;
 
 	  }
   }
@@ -343,8 +345,15 @@ vec3 Scene::raytrace( vec3 &rayStart, vec3 &rayDir, int depth, int thisObjIndex,
 bool Scene::findRefractionDirection( vec3 &rayDir, vec3 &N, vec3 &refractionDir )
 
 {
+   vec3 M = vec3(1,1,1);
+
   //cant figure out what M is supposed to be
- vec3 M = 0;
+ vec3 nr =  N^rayDir;
+ vec3 top =  N^(nr);
+ vec3 bot = vec3(1/top.length(),1/top.length(),1/top.length()); 
+ M = top%bot;
+
+
  float theta_i = atan2f((rayDir*N),(rayDir*M)); 
  float theta_r;
  //the bracket were being weird about exponentials lol

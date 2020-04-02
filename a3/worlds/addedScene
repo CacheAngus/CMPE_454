@@ -60,7 +60,7 @@ triangle                 # side
   0.174 0.985 1.2
   glass
 
-wavefront dog.obj
+wavefront scorpion.obj
 
 
 #glossy floor
@@ -75,3 +75,11 @@ triangle
   10 10 0 / 1 1
   -10 10 0 / 0 1
   floor
+
+  triangle
+  10 -10 0 / 1 1
+  10 10 0 / 0 1
+  -10 10 0 / 0 1
+  floor
+
+  
