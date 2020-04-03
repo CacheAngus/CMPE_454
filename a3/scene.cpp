@@ -353,12 +353,11 @@ bool Scene::findRefractionDirection( vec3 &rayDir, vec3 &N, vec3 &refractionDir 
  vec3 bot = vec3(1/top.length(),1/top.length(),1/top.length()); 
  M = top%bot;
 
-
+ // //incoming angle can be computer from two argument arctan2 by calc projection of Ri onto N and M
  float theta_i = atan2f((rayDir*N),(rayDir*M)); 
  float theta_r;
- //the bracket were being weird about exponentials lol
+
  float angle = N * rayDir;
-// //incoming angle can be computer from two argument arctan2 by calc projection of Ri onto N and M
  float totalInternalCheck = 1 - ((1.510)*(1.510))*(1 - (angle * angle));
  if(totalInternalCheck >= 0)
    {
