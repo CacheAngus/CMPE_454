@@ -319,11 +319,14 @@ vec3 Scene::raytrace( vec3 &rayStart, vec3 &rayDir, int depth, int thisObjIndex,
 	  bool TIR = findRefractionDirection(rayDir, N, refractionDir);
     vec3 raytraceRefracDir = raytrace(P, refractionDir, depth, objIndex, objPartIndex);
 
-    // Use the 'findRefractionDirection' function (below).
 	  if (TIR) {
-		  Iout = Iout + raytraceRefracDir;
+		  Iout = opacity * Iout + (1-opacity)*raytraceRefracDir;
 
 	  }
+    else {
+      //else it is total internal reflection
+      Iout = opacity * Iout;
+    }
   }
 
   return Iout;
@@ -353,7 +356,18 @@ bool Scene::findRefractionDirection( vec3 &rayDir, vec3 &N, vec3 &refractionDir 
  vec3 bot = vec3(1/top.length(),1/top.length(),1/top.length()); 
  M = top%bot;
 
- // //incoming angle can be computer from two argument arctan2 by calc projection of Ri onto N and M
+vec3 normal =N;
+
+//used to check the direction of the incoming ray to know if glass or air
+float RdotN = std::fmin(1, std::fmax(rayDir * normal, -1));
+ float directionRatio = 1.008/1.510;
+
+ if(RdotN > 0){
+   normal = -1* normal;
+   directionRatio = 1.510/1.008;
+ } 
+ 
+ // //incoming angle can be computer from two argument arctan2 by calc projection of Ri onto N and M 
  float theta_i = atan2f((rayDir*N),(rayDir*M)); 
  float theta_r;
 
@@ -362,15 +376,13 @@ bool Scene::findRefractionDirection( vec3 &rayDir, vec3 &N, vec3 &refractionDir 
  if(totalInternalCheck >= 0)
    {
 	 //this means it is not total internal reflection, 
-   theta_r = asin((sin(theta_i)*1.008)/1.510);
-   refractionDir = cos(theta_i)*N + sin(theta_r)*M;
+  refractionDir = directionRatio*rayDir + (directionRatio*RdotN - sqrtf(totalInternalCheck))*normal;
+  refractionDir = refractionDir.normalize();
    return true;
  }
 // //if going from glass to air will be total internal reflection since glass is more dense
  else {
-   //not sure but may need to also set the refractionDir for total internal refraction which should just be snells law again but 
-   //angle theta i = theta r = like 42 degrees or smt
-
+   
    return false;
  }
 

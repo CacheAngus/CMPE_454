@@ -1,22 +1,3 @@
-﻿  arcballWindow.cpp
-  arrow.cpp
-  axes.cpp
-  bbox.cpp
-  bvh.cpp
-  eye.cpp
-  font.cpp
-  glverts.cpp
-  gpuProgram.cpp
-  light.cpp
-  main.cpp
-  material.cpp
-  object.cpp
-  scene.cpp
-  sphere.cpp
-  texture.cpp
-  triangle.cpp
-  vertex.cpp
-  wavefront.cpp
-  wavefrontobj.cpp
-  Generating Code...
+﻿  scene.cpp
+c:\users\cache angus\documents\graphics\cmpe_454\a3\scene.cpp(372): warning C4101: 'theta_r': unreferenced local variable
   a3.vcxproj -> C:\Users\Cache Angus\Documents\graphics\CMPE_454\a3\Debug\a3.exe
